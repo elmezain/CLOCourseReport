@@ -343,9 +343,9 @@ td.n { text-align: center; }
 .rp-stat b { display: block; font: 600 17px var(--f-mono); } .rp-stat small { color: var(--ink2); font-size: 11px; }
 .rp-ta { min-height: 90px; font-family: var(--f-body); font-size: 14px; line-height: 1.55; }
 .rp-seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-.rp-seg label { padding: 7px 14px; cursor: pointer; font-size: 13.5px; border-inline-end: 1px solid var(--line); background: var(--surface); }
-.rp-seg label { position: relative; } .rp-seg label:last-child { border-inline-end: 0; } .rp-seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; } .rp-seg label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: -2px; }
-.rp-seg label:has(input:checked) { background: var(--accent); color: var(--accent-ink); }
+.rp-seg label { padding: 0; cursor: pointer; font-size: 13.5px; border-inline-end: 1px solid var(--line); background: var(--surface); }
+.rp-seg label { position: relative; } .rp-seg label:last-child { border-inline-end: 0; } .rp-seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; } .rp-seg span { display: block; padding: 7px 14px; } .rp-seg input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: -2px; }
+.rp-seg input:checked + span { background: var(--accent); color: var(--accent-ink); }
 @media (max-width: 1280px) { .rp-wrap { grid-template-columns: minmax(0, 1fr); } .rp-pv { position: static; } .rp-pvbox { max-height: none; } }
 
 /* ===== print: only the report sheets ===== */
@@ -442,7 +442,7 @@ a.brand { color: inherit; text-decoration: none; }
 .hm-dom .rg { position: relative; width: 84px; height: 84px; flex: none; } .hm-dom .rg b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 16px; direction: ltr; } .hm-dom h3 { font-size: 16px; } .hm-dom small { display: block; color: var(--ink2); margin: 2px 0 6px; }
 .hm-hb { display: grid; gap: 12px; } .hm-hb .r { display: grid; grid-template-columns: minmax(110px, 200px) minmax(0, 1fr) auto; gap: 12px; align-items: center; font-size: 13.5px; }
 .hm-hb .l { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .hm-hb .t { height: 12px; border-radius: 99px; background: var(--surface2); border: 1px solid var(--line2); overflow: hidden; }
-.hm-hb .f { height: 100%; border-radius: 99px; transform-origin: inline-start; animation: hmGrowX .9s cubic-bezier(.2, .8, .2, 1) both; } @keyframes hmGrowX { from { transform: scaleX(0); } }
+.hm-hb .f { height: 100%; border-radius: 99px; transform-origin: left; animation: hmGrowX .9s cubic-bezier(.2, .8, .2, 1) both; } @keyframes hmGrowX { from { transform: scaleX(0); } }
 .hm-hb .v { font-size: 13px; direction: ltr; unicode-bidi: isolate; text-align: end; white-space: nowrap; } .hm-hb .v em { font-style: normal; color: var(--ink3); }
 .hm-tw { max-height: 460px; } .hm-t tbody tr { cursor: pointer; transition: background .12s; } .hm-t tbody tr:hover, .hm-t tbody tr:focus-visible { background: var(--accent-soft); outline: none; }
 .hm-t td.nm { white-space: normal; min-width: 180px; } .hm-t td.pg { white-space: normal; min-width: 150px; font-size: 13px; color: var(--ink2); }
@@ -516,6 +516,9 @@ a.brand { color: inherit; text-decoration: none; }
 .df-copy{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line,#d6dcd8)}
 .df-copy b{display:block;margin-bottom:4px}
 .df-copy p{margin:0 0 10px;color:var(--muted,#5b6b66);font-size:13px;line-height:1.7}
+
+html[dir=rtl] .hm-hb .f { transform-origin: right; }
+body { -moz-osx-font-smoothing: grayscale; }
 </style></head>
 <body><div id="app"></div><div id="modal"></div><div id="printRoot"></div>
 <input type="file" id="fileP" accept="image/*" hidden><input type="file" id="fileT" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden><input type="file" id="fileX" accept=".xlsx,.xlsm,.xls" hidden><input type="file" id="fileJ" accept=".json,application/json" hidden>
@@ -1680,14 +1683,14 @@ Object.assign(I18N.ar, {
   'df.title': 'حفظ تلقائي في ملف على جهازك', 'df.sub': 'تُحفظ كل التغييرات تلقائياً داخل المتصفح (مع نسخة احتياطية ثانية). ولضمان بقاء بياناتك حتى لو مُسحت بيانات المتصفح أو فُتح الملف من مكان آخر، اربط ملف بيانات على جهازك ليُحدَّث تلقائياً مع كل تغيير (متصفح Chrome أو Edge).',
   'df.link': 'ربط ملف حفظ جديد', 'df.open': 'فتح ملف بيانات موجود', 'df.unlink': 'إيقاف الربط', 'df.resume': 'تفعيل الربط', 'df.short': 'ملف مرتبط',
   'df.status.linked': 'مرتبط بالملف: {0}', 'df.status.perm': 'الملف «{0}» يحتاج إلى إذنك لمتابعة الحفظ — انقر «تفعيل الربط»', 'df.status.none': 'غير مرتبط بملف (الحفظ داخل المتصفح فقط)',
-  'df.unsupported': 'متصفحك لا يدعم الربط بملف؛ استخدم «تصدير نسخة احتياطية» بين حين وآخر.', 'df.linked': 'تم ربط الملف وسيُحدَّث تلقائياً', 'df.loaded': 'تم تحميل البيانات من الملف', 'df.fail': 'تعذّر الوصول إلى الملف',
+  'df.unsupported': 'متصفحك (مثل Firefox) لا يدعم الربط التلقائي بملف؛ تُحفظ بياناتك داخل المتصفح تلقائياً، ويمكنك أيضاً تنزيل «نسخة تتضمن بياناتي» أو «تصدير نسخة احتياطية» بين حين وآخر.', 'df.linked': 'تم ربط الملف وسيُحدَّث تلقائياً', 'df.loaded': 'تم تحميل البيانات من الملف', 'df.fail': 'تعذّر الوصول إلى الملف',
   'df.openConfirm': 'ستُستبدل البيانات الحالية ببيانات الملف الذي تختاره. هل تريد المتابعة؟', 'df.banner': 'الملف المرتبط «{0}» متوقف عن الحفظ حتى تمنح الإذن.'
 });
 Object.assign(I18N.en, {
   'df.title': 'Auto-save to a file on your computer', 'df.sub': 'Every change is saved automatically in the browser (with a second backup copy). To keep your data even if browser data is cleared or the file is opened elsewhere, link a data file on your computer that is updated on every change (Chrome or Edge).',
   'df.link': 'Link a new save file', 'df.open': 'Open an existing data file', 'df.unlink': 'Stop linking', 'df.resume': 'Enable link', 'df.short': 'file linked',
   'df.status.linked': 'Linked file: {0}', 'df.status.perm': 'The file "{0}" needs your permission to keep saving — click "Enable link"', 'df.status.none': 'Not linked to a file (saved in the browser only)',
-  'df.unsupported': 'Your browser does not support linking a file; use "Export backup" from time to time.', 'df.linked': 'File linked; it will update automatically', 'df.loaded': 'Data loaded from the file', 'df.fail': 'Could not access the file',
+  'df.unsupported': 'Your browser (e.g. Firefox) cannot auto-link a file; your data is saved automatically in the browser, and you can also download "a copy with my data" or "Export backup" from time to time.', 'df.linked': 'File linked; it will update automatically', 'df.loaded': 'Data loaded from the file', 'df.fail': 'Could not access the file',
   'df.openConfirm': 'Current data will be replaced by the data in the file you choose. Continue?', 'df.banner': 'The linked file "{0}" has stopped saving until you grant permission.'
 });
 
@@ -2225,7 +2228,7 @@ Object.assign(I18N.en, {
   /* ---------- DATA & GUIDE ---------- */
   function pageData(c) {
     const box = (icn, title, desc, action) => '<div class="card flat"><div style="display:flex;gap:12px;align-items:flex-start"><span class="chip acc" style="padding:8px;border-radius:12px">' + ic(icn).replace('<svg ', '<svg style="width:20px;height:20px" ') + '</span><div style="min-width:0"><h2 style="font-size:16px">' + esc(title) + '</h2><p class="hint" style="margin:4px 0 12px">' + esc(desc) + '</p>' + action + '</div></div></div>';
-    const fileCard = '<div class="card df"><h2>' + esc(t('df.title')) + '</h2><p class="sub">' + esc(t('df.sub')) + '</p><div class="df-st ' + fl.state + '">' + ic(fl.state === 'linked' ? 'check' : fl.state === 'perm' ? 'alert' : 'x') + '<span>' + esc(fl.state === 'linked' ? t('df.status.linked', fl.name) : fl.state === 'perm' ? t('df.status.perm', fl.name) : t('df.status.none')) + '</span></div><div class="acts" style="margin-top:12px;justify-content:flex-start">' + (fl.state === 'perm' ? btn('dfResume', t('df.resume'), 'check', 'pri sm') : '') + (fl.state === 'none' ? btn('dfLink', t('df.link'), 'download', 'pri sm') + btn('dfOpen', t('df.open'), 'upload', 'sm') : btn('dfUnlink', t('df.unlink'), 'x', 'sm danger')) + '</div>' + (fsOK() ? '' : '<p class="hint" style="margin:10px 0 0">' + esc(t('df.unsupported')) + '</p>') + '<div class="df-copy"><b>' + esc(t('df.copyTitle')) + '</b><p>' + esc(t('df.copyDesc')) + '</p>' + btn('dfCopy', t('df.copy'), 'download', 'sm') + '</div></div>';
+    const fileCard = '<div class="card df"><h2>' + esc(t('df.title')) + '</h2><p class="sub">' + esc(t('df.sub')) + '</p><div class="df-st ' + fl.state + '">' + ic(fl.state === 'linked' ? 'check' : fl.state === 'perm' ? 'alert' : 'x') + '<span>' + esc(fl.state === 'linked' ? t('df.status.linked', fl.name) : fl.state === 'perm' ? t('df.status.perm', fl.name) : t('df.status.none')) + '</span></div><div class="acts" style="margin-top:12px;justify-content:flex-start">' + (fl.state === 'perm' ? btn('dfResume', t('df.resume'), 'check', 'pri sm') : '') + (fl.state === 'none' ? (fsOK() ? btn('dfLink', t('df.link'), 'download', 'pri sm') + btn('dfOpen', t('df.open'), 'upload', 'sm') : '') : btn('dfUnlink', t('df.unlink'), 'x', 'sm danger')) + '</div>' + (fsOK() ? '' : '<p class="hint" style="margin:10px 0 0">' + esc(t('df.unsupported')) + '</p>') + '<div class="df-copy"><b>' + esc(t('df.copyTitle')) + '</b><p>' + esc(t('df.copyDesc')) + '</p>' + btn('dfCopy', t('df.copy'), 'download', 'sm') + '</div></div>';
     return ph(t('pgData'), t('pgDataSub')) + '<div class="stack">' + fileCard + '<div class="cols">' +
       box('upload', t('impXlsx'), t('impXlsxD'), btn('impXlsx', t('pickFile'), 'upload', 'pri sm')) +
       box('xls', t('expXlsx'), t('expXlsxD'), btn('expXlsx', t('download'), 'download', 'pri sm')) +
@@ -2463,7 +2466,7 @@ Object.assign(I18N.en, {
       return '<div class="rp-tbl">' + (rows || '<div class="hint">' + esc(t('rp.empty')) + '</div>') + '<div>' + btn('rpAdd', t('rp.add'), 'plus', 'sm', 'data-l="' + name + '"' + RS) + '</div></div>';
     };
     const cov = REPORT.COVER_KEYS.map((k) => rf('f', k, t('rp.f.' + k), au[k], rp.f[k] || '', (k === 'title' || k === 'college' || k === 'institution') ? 'span2' : '')).join('') +
-      '<div class="field"><span>' + esc(t('rp.loc')) + '</span><div class="rp-seg">' + [['main', 'rp.loc.main'], ['branch', 'rp.loc.branch'], ['none', 'rp.loc.none']].map(([v, k]) => '<label><input type="radio" name="rp_loc" data-f="rp"' + RS + ' data-g="root" data-k="loc" value="' + v + '"' + ((rp.loc || 'branch') === v ? ' checked' : '') + '>' + esc(t(k)) + '</label>').join('') + '</div></div>' +
+      '<div class="field"><span>' + esc(t('rp.loc')) + '</span><div class="rp-seg">' + [['main', 'rp.loc.main'], ['branch', 'rp.loc.branch'], ['none', 'rp.loc.none']].map(([v, k]) => '<label><input type="radio" name="rp_loc" data-f="rp"' + RS + ' data-g="root" data-k="loc" value="' + v + '"' + ((rp.loc || 'branch') === v ? ' checked' : '') + '><span>' + esc(t(k)) + '</span></label>').join('') + '</div></div>' +
       rf('root', 'date', t('rp.date'), '', rp.date || todayISO(), '', 'date');
     const g = m.grades;
     const stat = '<div class="rp-stat">' + ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'F'].map((x, i) => '<div><b>' + g.counts[i] + '</b><small>' + esc(x) + (g.pcts[i] ? ' · ' + g.pcts[i] : '') + '</small></div>').join('') + g.status.map((s) => '<div><b>' + s.count + '</b><small>' + esc(s.label) + (s.pct ? ' · ' + s.pct : '') + '</small></div>').join('') + '</div><p class="hint" style="margin:8px 0 14px">' + esc(t('rp.pctOfCompleted')) + '</p>';
